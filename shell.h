@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 13:38:26 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/20 13:56:52 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/20 16:52:34 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,8 @@
 # include <sys/wait.h> //wait, waitpid, wait3, wait4
 # include <signal.h> //signal, kill
 # include <dirent.h> //opendir, readdir, closedir
+# include "libft/libft.h"
+
+# include <stdio.h>
 
 #endif

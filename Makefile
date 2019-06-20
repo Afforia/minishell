@@ -6,13 +6,13 @@
 #    By: thaley <thaley@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/20 13:59:52 by thaley            #+#    #+#              #
-#    Updated: 2019/06/20 14:01:57 by thaley           ###   ########.fr        #
+#    Updated: 2019/06/20 16:02:23 by thaley           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 OBJ_DIR = objects/
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g #-Wall -Wextra -Werror
 
 SRC = $(wildcard *.c)
 
