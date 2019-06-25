@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 14:55:39 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/24 18:25:39 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 19:19:40 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	free_array(char ***arr)
 
 void	exit_shell(char **arr, int error)
 {
+	free_array(&env);
+	env = NULL;
 	if (arr)
 		free_array(&arr);
 	if (error == -1)

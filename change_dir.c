@@ -6,34 +6,11 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 14:52:13 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 17:27:57 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 20:05:46 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-char		*parse_path(char *env, int	start)
-{
-	char	*new;
-
-	if (!env)
-		return (NULL);
-	new = ft_strsub(env, start, (ft_strlen(env) - start));
-	return (new);
-}
-
-int			find_env(char *search_string)
-{
-	int		pos;
-
-	pos = -1;
-	while (env[++pos])
-	{
-		if (env_start(env[pos], search_string))
-			return (pos);
-	}
-	return (0);
-}
 
 char		*cd_home_path(void)
 {
@@ -42,11 +19,9 @@ char		*cd_home_path(void)
 	int		len;
 
 	len = ft_strlen("HOME=");
-	pos = find_env("HOME=");
+	pos = env_start("HOME=");
 	path = ft_strsub(env[pos], len, ft_strlen(env[pos]) - len);
-	pos = find_env("PWD=");
-	free(env[pos]);
-	env[pos] = ft_strjoin("PWD=", path);
+	new_pwd(path);
 	return (path);
 }
 
@@ -57,7 +32,7 @@ char		*cd_prev_dir(void)
 	int		end;
 	int		start;
 
-	pos = find_env("PWD=");
+	pos = env_start("PWD=");
 	start = ft_strlen("PWD=");
 	end = ft_strlen(env[pos]);
 	while (env[pos][end - 1] && env[pos][end - 1] != '/')
@@ -66,11 +41,7 @@ char		*cd_prev_dir(void)
 		path = ft_strsub(env[pos], start, end - start);
 	else
 		path = ft_strsub(env[pos], start, end - start - 1);
-	free(env[pos]);
-	env[pos] = ft_strjoin("PWD=", path);
-	write(1, "\n", 1);
-	ft_putstr(env[pos]);
-	write(1, "\n", 1);
+	new_pwd(path);
 	return (path);
 }
 
@@ -78,6 +49,7 @@ void		change_dir(char **cmd)
 {
 	char	*path;
 
+	path = NULL;
 	if (cmd[1] && cmd[2])
 	{
 		ft_putstr("cd: string not in pwd: ");
@@ -85,15 +57,13 @@ void		change_dir(char **cmd)
 	}
 	if (!cmd[1] || !ft_strcmp(cmd[1], ".") || !ft_strcmp(cmd[1], "~"))
 		path = cd_home_path();
-	else if (cmd[1] && !ft_strcmp(cmd[1], ".."))
+	else if (cmd[1] && cmd[1][0] == '.' && cmd[1][1] == '.') //TODO: check atributes? а потом запускать переход для определенной задачи
 		path = cd_prev_dir();
-	else if (cmd[1] && cmd[1][0] == '/')
-		path = cd_root();
-	else
-		path = cd_forward();
-	ft_putstr(path);
-	write(1, "\n", 1);
+	// else if (cmd[1] && cmd[1][0] == '/')
+	// 	path = cd_root();
+	// else
+	// 	path = cd_forward();
 	chdir(path);
-	free(path);
-	path = NULL;
+	if (path)
+		free(path);
 }

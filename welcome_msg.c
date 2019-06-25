@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:15:46 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 17:07:57 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 18:10:02 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,10 @@ int		cmp_path(char *env, char *cwd)
 int		check_home_path(char *cwd)
 {
 	int	i;
-	int	check;
 
-	i = -1;
-	check = 0;
-	while (env[++i])
-	{
-		if (env_start(env[i], "HOME="))
-		{
-			check = 1;
-			break ;
-		}
-	}
-	if (check)
-	{
+	i = 0;
+	if ((i = env_start("HOME=")) > 0)
+	{	
 		if (cmp_path(env[i], cwd))
 			return (1);
 	}

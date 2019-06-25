@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:08:53 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/24 20:15:06 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 19:37:06 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int		count_words(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (SPACES(input[i]))
+		if (input[i] && SPACES(input[i]))
 			i++;
-		if (!SPACES(input[i]))
+		if (input[i] && !SPACES(input[i]))
 			len++;
-		if (!SPACES(input[i]))
+		while (input[i] && !SPACES(input[i]))
 			i++;
 	}
 	return (len);
@@ -58,7 +58,7 @@ char	**split_all(char *input)
 	{
 		if (SPACES(input[i]))
 			i++;
-		if (!SPACES(input[i]))
+		if (input[i] && !SPACES(input[i]))
 		{
 			new[j] = ft_strsub(input, i, word_len(input, i));
 			while (input[i] && !SPACES(input[i]))

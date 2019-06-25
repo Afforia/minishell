@@ -6,25 +6,56 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 15:04:17 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 16:11:51 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 18:19:15 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		env_start(char *env, char *search_string)
+void		new_pwd(char *path)
+{
+	char	*tmp;
+	int		pwd_pos;
+	int		old_pwd_pos;
+
+	pwd_pos = env_start("PWD=");
+	old_pwd_pos = env_start("OLDPWD=");
+	tmp = ft_strsub(env[pwd_pos], 4, ft_strlen(env[pwd_pos]) - 4);
+	free(env[pwd_pos]);
+	free(env[old_pwd_pos]);
+	env[pwd_pos] = ft_strjoin("PWD=", path);
+	env[old_pwd_pos] = ft_strjoin("OLDPWD=", tmp);
+	free(tmp);
+}
+
+int			env_start(char *search_string)
 {
 	int		i;
+	int		j;
 	int		len;
 
+	i = -1;
 	len = ft_strlen(search_string);
-	i = 0;
-	while (env[i] && search_string[i] && len)
+	while (env[++i])
 	{
-		if (env[i] != search_string[i])
-			return (0);
-		i++;
-		len--;
+		j = -1;
+		while (env[i][++j] && j < len)
+		{
+			if (env[i][j] == search_string[j] && search_string[j + 1] == '\0')
+				return (i);
+			else if (env[i][j] != search_string[j])
+				break ;
+		}
 	}
-	return (1);
+	return (0);
+}
+
+char		*parse_path(char *env, int	start)
+{
+	char	*new;
+
+	if (!env)
+		return (NULL);
+	new = ft_strsub(env, start, (ft_strlen(env) - start));
+	return (new);
 }

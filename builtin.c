@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:20:43 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 16:03:57 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 20:33:00 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,11 @@ int		check_builtin(char **cmd)
 		exit_shell(cmd, 0);
 	if (!(ft_strcmp(cmd[0], "cd")))
 		change_dir(cmd);
+	if (!(ft_strcmp(cmd[0], "pwd")))
+		get_built(cmd);
+	if (!(ft_strcmp(cmd[0], "ls")))
+		get_built(cmd);
+	if (!(ft_strcmp(cmd[0], "clear")))
+  		system("clear");
 	return (0);
 }
