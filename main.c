@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 14:11:03 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/24 21:32:37 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 16:04:26 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	*take_input(void)
 
 int		main(int argc, char **argv, char **envp)
 {
-	char	**env;
 	char	*path;
 	char	*input;
 	char	**cmds;
@@ -86,11 +85,11 @@ int		main(int argc, char **argv, char **envp)
 	env = write_env(envp);
 	while (1)
 	{
-		print_welcome_msg(env);
+		print_welcome_msg();
 		signal(SIGINT, SIG_DFL);
 		input = take_input();
 		cmds = split_cmds(input);
-		execute_cmds(cmds, env);
+		execute_cmds(cmds);
 	}
 	return (0);
 }

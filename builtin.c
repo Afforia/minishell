@@ -6,43 +6,45 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:20:43 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/24 20:17:46 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 16:03:57 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	print_echo(char **cmds)
+void	print_echo(char **cmd)
 {
 	int		start;
 	int		finish;
 	int		i;
 
 	i = 0;
-	while (cmds[++i])
+	while (cmd[++i])
 	{
 		start = 0;
-		finish = ft_strlen(cmds[i]);
-		if (cmds[i][0] == '"')
+		finish = ft_strlen(cmd[i]);
+		if (cmd[i][0] == '"')
 			start++;
 		if (start)
 			finish--;
 		while (start < finish)
 		{
-			write(1, &cmds[i][start], 1);
+			write(1, &cmd[i][start], 1);
 			start++;
 		}
-		if (cmds[i + 1])
+		if (cmd[i + 1])
 			write(1, " ", 1);
 	}
 	write(1, "\n", 1);
 }
 
-int		check_builtin(char **cmds)
+int		check_builtin(char **cmd)
 {
-	if (!(ft_strcmp(cmds[0], "echo")))
-		print_echo(cmds);
-	if (!(ft_strcmp(cmds[0], "exit")))
-		exit_shell(cmds, 0);
+	if (!(ft_strcmp(cmd[0], "echo")))
+		print_echo(cmd);
+	if (!(ft_strcmp(cmd[0], "exit")))
+		exit_shell(cmd, 0);
+	if (!(ft_strcmp(cmd[0], "cd")))
+		change_dir(cmd);
 	return (0);
 }

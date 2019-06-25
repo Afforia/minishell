@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   enviroment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 16:04:23 by thaley           ###   ########.fr       */
+/*   Created: 2019/06/25 15:04:17 by thaley            #+#    #+#             */
+/*   Updated: 2019/06/25 16:11:51 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		execute_cmds(char **cmds)
+int		env_start(char *env, char *search_string)
 {
-	char	**cmd;
 	int		i;
+	int		len;
 
+	len = ft_strlen(search_string);
 	i = 0;
-	while (cmds[i])
+	while (env[i] && search_string[i] && len)
 	{
-		cmd = NULL;
-		cmd = split_all(cmds[i]);
-		check_builtin(cmd);
-		free_array(&cmd);
+		if (env[i] != search_string[i])
+			return (0);
 		i++;
+		len--;
 	}
-	free_array(&cmds);
+	return (1);
 }

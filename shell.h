@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 13:38:26 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/24 21:31:22 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 16:11:56 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,22 @@
 
 # include <stdio.h>
 
+char		**env;
+
 void		free_array(char ***arr);
 void		exit_shell(char **arr, int error);
 
-void		print_welcome_msg(char **env);
+void		print_welcome_msg();
 
 char		**split_cmds(char *input);
 char		**split_all(char *input);
 
-void		execute_cmds(char **cmds, char **env);
+void		execute_cmds(char **cmds);
 
-int			check_builtin(char **cmds);
+int			env_start(char *env, char *search_string);
+
+int			check_builtin(char **cmd);
+
+void		change_dir(char **cmd);
 
 #endif

@@ -6,28 +6,11 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:15:46 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/24 22:11:39 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 17:07:57 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-int		env_start(char *env, char *search_string)
-{
-	int		i;
-	int		len;
-
-	len = ft_strlen(search_string);
-	i = 0;
-	while (env[i] && search_string[i] && len)
-	{
-		if (env[i] != search_string[i])
-			return (0);
-		i++;
-		len--;
-	}
-	return (1);
-}
 
 int		cmp_path(char *env, char *cwd)
 {
@@ -51,7 +34,7 @@ int		cmp_path(char *env, char *cwd)
 		return (0);
 }
 
-int		check_home_path(char *cwd, char **env)
+int		check_home_path(char *cwd)
 {
 	int	i;
 	int	check;
@@ -74,7 +57,7 @@ int		check_home_path(char *cwd, char **env)
 	return (0);
 }
 
-char	*parse_path(char *cwd, char **env)
+char	*parse_print_path(char *cwd)
 {
 	char	*new;
 	int		start;
@@ -82,7 +65,7 @@ char	*parse_path(char *cwd, char **env)
 
 	new = NULL;
 	len = 0;
-	if (check_home_path(cwd, env))
+	if (check_home_path(cwd))
 		new = ft_strdup("~");
 	else
 	{
@@ -93,19 +76,19 @@ char	*parse_path(char *cwd, char **env)
 			if (cwd[start] == '/')
 				break ;
 		}
-		new = ft_strsub(cwd, start + 1, len);
+		new = ft_strsub(cwd, start, len);
 	}
 	return (new);
 }
 
-void	print_welcome_msg(char **env)
+void	print_welcome_msg()
 {
 	char	*cwd;
 	char	*path;
 	char	buf[4097];
 
 	cwd = getcwd(buf, 4096);
-	path = parse_path(cwd, env);
+	path = parse_print_path(cwd);
 	ft_putstr("\33[01;35m");
 	ft_putstr(path);
 	write(1, " ", 1);

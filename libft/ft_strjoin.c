@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/06 19:17:16 by thaley            #+#    #+#             */
-/*   Updated: 2019/02/04 22:27:54 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/25 16:19:06 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*s_new;
 	size_t	len;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	i = -1;
 	j = 0;
