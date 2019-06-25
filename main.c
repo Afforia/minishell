@@ -6,197 +6,91 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 14:11:03 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/20 17:47:07 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/24 21:32:37 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 #define SH_BUFSIZE 1024
 
-int		sh_cd(char **args);
-int		sh_help(char **args);
-int		sh_exit(char **args);
-
-char	*builtin_str[] = {
-	"cd",
-	"help",
-	"exit"
-};
-
-int		(*builtin_func[])(char **) = {
-	&sh_cd,
-	&sh_help,
-	&sh_exit
-};
-
-int		sh_num_builtins()
+int		len_env(char **envp)
 {
-	return (sizeof(builtin_str) / sizeof(char *));
-}
+	int		len;
 
-int		sh_cd(char **args)
-{
-	if (args[1] == NULL)
-	{
-		write(2, "need arg for cd\n", 16);
-	}
-	else
-	{
-		if (chdir(args[1]) != 0)
-			perror("sh");
-		
-	}
-	return (1);
-}
-
-int		sh_help(char **args)
-{
-	int		i;
-
-	i = 0;
-	while (i < sh_num_builtins())
-	{
-		ft_putstr(builtin_str[i]);
-		i++;
-	}
-	return (1);
-}
-
-int		sh_exit(char **args)
-{
-	return (0);
-}
-
-char	*sh_read_line(char **argv)
-{
-	int		bufsize;
-	int		pos;
-	int		i;
-	char	*buf;
-
-	bufsize = SH_BUFSIZE;
-	pos = 0;
-	i = 1;
-	if (!(buf = (char *)malloc(sizeof(char) * bufsize)))
-	{
-		write(1, "can't allocate memory.", 22);
-		exit(EXIT_FAILURE);
-	}
-	while (argv[i])
-	{
-		pos = 0;
-		while (argv[i][pos])
-		{
-			buf[pos] = argv[i][pos];
-			pos++;
-		}
-		i++;
-	}
-	return (buf);
-}
-
-char	**sh_split_line(char *line)
-{
-	int		i;
-	int		finish;
-	int		start;
-	size_t	len;
-	char	**new_args;
-
-//FIXME: если только 1 аргумент он не записывается в args
-
-	i = 0;
-	finish = 0;
-	start = 0;
 	len = 0;
-	if (!line || line[0] == '\0')
-		return (NULL);
-	new_args = (char **)malloc(sizeof(char *) * 64);
-	while (line[finish])
-	{
-		if (line[finish] == '\n' || line[finish] == '\t' || line[finish] == ' ')
-		{
-			new_args[i] = ft_strsub(line, start, len);
-			len = 0;
-			i++;
-			start = finish + 1;
-		}
+	while (envp[len])
 		len++;
-		finish++;
-	}
-	return (new_args);
+	return (len);
 }
 
-int		sh_launch(char **args, char **envp)
+char	**write_env(char **envp)
 {
-	pid_t	pid;
-	pid_t	wpid;
-	int		status;
+	char	**new;
+	int		i;
 
-	pid = fork();
-	if (pid == 0)
+	if (!(new = (char **)malloc(sizeof(char *) * len_env(envp) + 1)))
+		exit_shell(new, -1);
+	i = 0;
+	while (envp[i])
 	{
-		if (execve(args[0], args, envp) == -1)
-			perror("error: ");
-		exit(EXIT_FAILURE);
+		if (!(new[i] = ft_strdup(envp[i])))
+			exit_shell(new, -1);
+		i++;
 	}
-	else if (pid < 0)
-		perror("error: ");
+	return (new);
+}
+
+char	*ft_realloc(char *str, int i)
+{
+	char *tmp;
+
+	tmp = NULL;
+	if (i == 0)
+		str = ft_strnew(1);
 	else
 	{
-		do
-		{
-			wpid = waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));		
+		tmp = ft_strdup(str);
+		free(str);
+		str = (char *)malloc(sizeof(char) * i + 2);
+		str = ft_strcpy(str, tmp);
+		free(tmp);
 	}
-	return (1);
+	return (str);
 }
 
-int		sh_execute(char **args, char **envp)
+char	*take_input(void)
 {
+	int		ret;
+	char	buf;
+	char	*new;
 	int		i;
 
 	i = 0;
-	if (!args[0])
-		return (1);
-	while (i < sh_num_builtins())
+	while ((ret = read(0, &buf, 1)) && buf != '\n')
 	{
-		if (!ft_strcmp(args[0], builtin_str[i]))
-			return ((*builtin_func[i])(args));
+		new = ft_realloc(new, i);
+		new[i] = buf;
+		new[i + 1] = '\0';
 		i++;
 	}
-	return (sh_launch(args, envp));
-}
-
-void	sh_loop(char **argv, char **envp)
-{
-	char	*line;
-	char	**args;
-	int		status;
-	int		i;
-	int		j;
-
-	i = 64;
-	do
-	{
-		write(1, ">>", 2);
-		if (!(line = sh_read_line(argv)))
-			exit(EXIT_FAILURE);
-		if (!(args = sh_split_line(line)))
-			exit(EXIT_FAILURE);
-		status = sh_execute(args, envp);
-		if (line)
-			free(line);
-		if (args)
-			free(args);
-	} while (status);
-	
+	return (new);
 }
 
 int		main(int argc, char **argv, char **envp)
 {
-	// while (*envp != NULL)
-	// 	printf("%s\n", *(envp++));
-	sh_loop(argv, envp);
+	char	**env;
+	char	*path;
+	char	*input;
+	char	**cmds;
+
+	env = write_env(envp);
+	while (1)
+	{
+		print_welcome_msg(env);
+		signal(SIGINT, SIG_DFL);
+		input = take_input();
+		cmds = split_cmds(input);
+		execute_cmds(cmds, env);
+	}
 	return (0);
 }
