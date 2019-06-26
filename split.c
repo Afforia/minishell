@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:08:53 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 19:37:06 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/26 12:04:59 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	**split_cmds(char *input)
 
 	i = 0;
 	begin = 0;
+	end = 0;
 	count = count_cmds(input);
 	new = (char **)malloc(sizeof(char *) * count + 1);
 	while (input[end] && count)

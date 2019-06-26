@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:15:46 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 18:10:02 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/26 12:20:22 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	print_welcome_msg()
 
 	cwd = getcwd(buf, 4096);
 	path = parse_print_path(cwd);
-	ft_putstr("\33[01;35m");
+	ft_putstr("\33[01;33m");
 	ft_putstr(path);
 	write(1, " ", 1);
-	ft_putstr("\33[01;35m>>\33[0m ");
+	ft_putstr("\33[01;36m>>\33[0m ");
 	free(path);
 }

@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:20:43 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 20:33:00 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/26 19:27:52 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_echo(char **cmd)
 		finish = ft_strlen(cmd[i]);
 		if (cmd[i][0] == '"')
 			start++;
-		if (start)
+		if (cmd[i][finish - 1] == '"')
 			finish--;
 		while (start < finish)
 		{
@@ -46,6 +46,12 @@ int		check_builtin(char **cmd)
 		exit_shell(cmd, 0);
 	if (!(ft_strcmp(cmd[0], "cd")))
 		change_dir(cmd);
+	if (!(ft_strcmp(cmd[0], "env")))
+		print_env();
+	if (!(ft_strcmp(cmd[0], "setenv")))
+		set_env(cmd + 1);
+	if (!(ft_strcmp(cmd[0], "unsetenv")))
+		unset_env(cmd + 1);
 	if (!(ft_strcmp(cmd[0], "pwd")))
 		get_built(cmd);
 	if (!(ft_strcmp(cmd[0], "ls")))

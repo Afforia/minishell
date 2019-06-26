@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 13:38:26 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 20:20:56 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/26 18:40:09 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,12 @@ int			check_builtin(char **cmd);
 
 void		change_dir(char **cmd);
 
+void		rewrite_env(int pos, char *name, char *value);
+int			set_env_aux(char *name, char *value, int overwrite);
+int			set_env(char **cmd);
+
+void		unset_env(char **cmd);
+
+void		print_env(void);
 
 #endif

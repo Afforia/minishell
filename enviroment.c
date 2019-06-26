@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 15:04:17 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 18:19:15 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/26 17:44:19 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			env_start(char *search_string)
 				break ;
 		}
 	}
-	return (0);
+	return (-1);
 }
 
 char		*parse_path(char *env, int	start)
