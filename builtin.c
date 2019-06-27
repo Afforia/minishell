@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:20:43 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/26 19:27:52 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/27 13:44:48 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		check_builtin(char **cmd)
 	if (!(ft_strcmp(cmd[0], "exit")))
 		exit_shell(cmd, 0);
 	if (!(ft_strcmp(cmd[0], "cd")))
-		change_dir(cmd);
+		change_dir(cmd + 1);
 	if (!(ft_strcmp(cmd[0], "env")))
 		print_env();
 	if (!(ft_strcmp(cmd[0], "setenv")))
@@ -57,6 +57,6 @@ int		check_builtin(char **cmd)
 	if (!(ft_strcmp(cmd[0], "ls")))
 		get_built(cmd);
 	if (!(ft_strcmp(cmd[0], "clear")))
-  		system("clear");
+  		get_built(cmd);
 	return (0);
 }

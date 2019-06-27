@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 20:21:02 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/27 13:43:23 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void		get_built(char **cmd)
 	int	i;
 
 	buil = NULL;
-	buil = ft_strjoin("/bin/", cmd[0]);
+	if (!(ft_strcmp(cmd[0], "pwd")) || !(ft_strcmp(cmd[0], "ls")))
+		buil = ft_strjoin("/bin/", cmd[0]);
+	else if (!(ft_strcmp(cmd[0], "clear")))
+		buil = ft_strjoin("/usr/bin/", cmd[0]);
 	i = env_start("PWD=");
 	path = ft_strsub(env[i], 4, ft_strlen(env[i]) - 4);
 	pid = fork();

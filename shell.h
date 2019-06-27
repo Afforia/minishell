@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 13:38:26 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/26 18:40:09 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/27 16:33:51 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char		**split_all(char *input);
 void		get_built(char **cmd);
 void		execute_cmds(char **cmds);
 
-void		new_pwd(char *path);
+void		change_pwd(char *new_pwd);
 char		*parse_path(char *env, int	start);
 int			env_start(char *search_string);
 
@@ -56,5 +56,7 @@ int			set_env(char **cmd);
 void		unset_env(char **cmd);
 
 void		print_env(void);
+
+char		*take_full_path(char *str);
 
 #endif

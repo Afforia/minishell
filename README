@@ -12,9 +12,7 @@
 ◦ exit
 
 
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-SESSION_MANAGER=local/aforia:@/tmp/.ICE-unix/1280,unix/aforia:/tmp/.ICE-unix/1280
-_=/usr/bin/env
+PATH=/Users/thaley/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Users/thaley/.brew/bin
 
 
 cat ~/bin/colors

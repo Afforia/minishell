@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 14:52:13 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 20:05:46 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/27 15:51:44 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,23 @@
 char		*cd_home_path(void)
 {
 	int		pos;
+	int		old_pwd;
 	char	*path;
 	int		len;
 
 	len = ft_strlen("HOME=");
 	pos = env_start("HOME=");
 	path = ft_strsub(env[pos], len, ft_strlen(env[pos]) - len);
-	new_pwd(path);
 	return (path);
 }
 
-char		*cd_prev_dir(void)
+char		*cd_oldpwd(void)
 {
-	int		pos;
 	char	*path;
-	int		end;
-	int		start;
+	int		pos;
 
-	pos = env_start("PWD=");
-	start = ft_strlen("PWD=");
-	end = ft_strlen(env[pos]);
-	while (env[pos][end - 1] && env[pos][end - 1] != '/')
-		end--;
-	if (end - 1 == start)
-		path = ft_strsub(env[pos], start, end - start);
-	else
-		path = ft_strsub(env[pos], start, end - start - 1);
-	new_pwd(path);
+	pos = env_start("OLDPWD=");
+	path = ft_strsub(env[pos], 7, ft_strlen(env[pos]) - 7);
 	return (path);
 }
 
@@ -50,20 +40,24 @@ void		change_dir(char **cmd)
 	char	*path;
 
 	path = NULL;
-	if (cmd[1] && cmd[2])
+	if (cmd[0] && cmd[1])
 	{
 		ft_putstr("cd: string not in pwd: ");
-		ft_putstr(cmd[1]);
+		ft_putstr(cmd[0]);
+		return ;
 	}
-	if (!cmd[1] || !ft_strcmp(cmd[1], ".") || !ft_strcmp(cmd[1], "~"))
+	if (!cmd[0] || !ft_strcmp(cmd[0], ".") || !ft_strcmp(cmd[0], "~"))
 		path = cd_home_path();
-	else if (cmd[1] && cmd[1][0] == '.' && cmd[1][1] == '.') //TODO: check atributes? а потом запускать переход для определенной задачи
-		path = cd_prev_dir();
-	// else if (cmd[1] && cmd[1][0] == '/')
-	// 	path = cd_root();
-	// else
-	// 	path = cd_forward();
-	chdir(path);
-	if (path)
+	else if (cmd[0] && !ft_strcmp(cmd[0], "-"))
+		path = cd_oldpwd();
+	else
+		path = ft_strdup(cmd[0]);
+	if ((chdir(path)) < 0)
+	{
+		ft_putstr("cd: no such file or directory: ");
+		ft_putendl(cmd[0]);
 		free(path);
+		return ;
+	}
+	change_pwd(path);
 }
