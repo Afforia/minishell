@@ -5,59 +5,112 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/25 14:52:13 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 15:51:44 by thaley           ###   ########.fr       */
+/*   Created: 2019/06/27 20:17:15 by thaley            #+#    #+#             */
+/*   Updated: 2019/06/27 22:16:17 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-char		*cd_home_path(void)
+char		*fullpath_from_short(int num)
 {
+	char	*new;
 	int		pos;
-	int		old_pwd;
-	char	*path;
-	int		len;
 
-	len = ft_strlen("HOME=");
-	pos = env_start("HOME=");
-	path = ft_strsub(env[pos], len, ft_strlen(env[pos]) - len);
-	return (path);
+	if (num == 1)
+	{
+		pos = env_start("HOME=");
+		new = ft_strsub(env[pos], 5, ft_strlen(env[pos]) - 5);
+	}
+	else if (num == 2)
+	{
+		pos = env_start("OLDPWD=");
+		new = ft_strsub(env[pos], 7, ft_strlen(env[pos]) - 7);
+	}
+	return (new);
 }
 
-char		*cd_oldpwd(void)
+char		**parse_args(char *cmd, int len)
 {
-	char	*path;
-	int		pos;
+	char	**new;
+	int		start;
+	int		end;
+	int		i;
 
-	pos = env_start("OLDPWD=");
-	path = ft_strsub(env[pos], 7, ft_strlen(env[pos]) - 7);
-	return (path);
+	start = 0;
+	end = -1;
+	i = 0;
+	new = (char **)malloc(sizeof(char *) * len);
+	while (cmd[++end])
+	{
+		if (end == 0 && !ft_strcmp(cmd, "-"))
+			new[i++] = fullpath_from_short(2);
+		else if (cmd[end] == '/' || cmd[end + 1] == '\0')
+		{
+			new[i] = ft_strsub(cmd, start, end + 1 - start);
+			start = end + 1;
+			i++;
+		}
+	}
+	new[i] = NULL;
+	return (new);
+}
+
+char		**take_args(char *cmd)
+{
+	char	**new;
+	int		i;
+	int		len;
+
+	i = -1;
+	len = 0;
+	while (cmd[++i])
+	{
+		if (cmd[i] == '/' || cmd[i + 1] == '\0')
+			len++;
+	}
+	new = parse_args(cmd, len);
+	return (new);
+}
+
+void		rewrite_pwd(void)
+{
+	char	buf[4097];
+	char	*cwd;
+
+	cwd = getcwd(buf, 4096);
+	change_pwd(cwd);
 }
 
 void		change_dir(char **cmd)
 {
-	char	*path;
+	char	**input;
+	int		i;
 
-	path = NULL;
+	i = -1;
 	if (cmd[0] && cmd[1])
 	{
-		ft_putstr("cd: string not in pwd: ");
-		ft_putstr(cmd[0]);
+		erroring("cd", cmd[0],  2);
 		return ;
 	}
 	if (!cmd[0] || !ft_strcmp(cmd[0], ".") || !ft_strcmp(cmd[0], "~"))
-		path = cd_home_path();
-	else if (cmd[0] && !ft_strcmp(cmd[0], "-"))
-		path = cd_oldpwd();
-	else
-		path = ft_strdup(cmd[0]);
-	if ((chdir(path)) < 0)
 	{
-		ft_putstr("cd: no such file or directory: ");
-		ft_putendl(cmd[0]);
-		free(path);
-		return ;
+		input = (char **)malloc(sizeof(char *) + 1);
+		input[0] = fullpath_from_short(1);
+		input[1] = NULL;
 	}
-	change_pwd(path);
+	else if (cmd[0])
+		input = take_args(cmd[0]);
+	while (input[++i])
+	{
+		if ((chdir(input[i])) < 0)
+		{
+			erroring("cd", input[i], 1);
+			if (input)
+				free_array(&input);
+			return ;
+		}
+		else
+			change_pwd();
+	}
 }

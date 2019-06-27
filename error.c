@@ -1,47 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_shell.c                                       :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 14:55:39 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 22:18:48 by thaley           ###   ########.fr       */
+/*   Created: 2019/06/27 20:19:32 by thaley            #+#    #+#             */
+/*   Updated: 2019/06/27 21:23:54 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	free_array(char ***arr)
+void		erroring(char *cmd, char *str, int error)
 {
-	int		i;
-
-	i = 0;
-	if ((*arr))
+	if (!(ft_strcmp(str, "cd")))
 	{
-		while ((*arr)[i])
+		switch(error)
 		{
-			free((*arr)[i]);
-			i++;
+			case 1:
+				ft_putstr("cd: no such file or directory: ");
+				ft_putendl(str);
+			case 2:
+				ft_putstr("cd: string not in pwd: ");
+				ft_putendl(str);
+			default:
+				break ;
 		}
-		free((*arr));
 	}
-}
-
-void	exit_shell(char **arr, int error)
-{
-	if (env)
-	{
-		free_array(&env);
-		env = NULL;
-	}
-	if (arr)
-		free_array(&arr);
-	if (error == -1)
-	{
-		ft_putstr("Not enough space/cannot allocate memory.\n");
-		exit(0);
-	}
-	if (error == 0)
-		exit(EXIT_SUCCESS);
 }

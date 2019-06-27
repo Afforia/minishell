@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 13:43:23 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/27 22:17:06 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ void		execute_cmds(char **cmds)
 		cmd = NULL;
 		cmd = split_all(cmds[i]);
 		check_builtin(cmd);
-		free_array(&cmd);
+		if (cmd)
+			free_array(&cmd);
 		i++;
 	}
-	free_array(&cmds);
+	if (cmds)
+		free_array(&cmds);
 }
