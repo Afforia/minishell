@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:08:53 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/26 12:04:59 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 17:33:46 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,16 @@ char	**split_all(char *input)
 
 	i = 0;
 	j = 0;
-	new = (char **)malloc(sizeof(char *) * count_words(input) + 1);
+	if (!(new = (char **)malloc(sizeof(char *) * count_words(input) + 1)))
+		exit_shell(NULL, -1);
 	while (input[i])
 	{
 		if (SPACES(input[i]))
 			i++;
 		if (input[i] && !SPACES(input[i]))
 		{
-			new[j] = ft_strsub(input, i, word_len(input, i));
+			if (!(new[j] = ft_strsub(input, i, word_len(input, i))))
+				exit_shell(new, -1);
 			while (input[i] && !SPACES(input[i]))
 				i++;
 			j++;
@@ -97,12 +99,14 @@ char	**split_cmds(char *input)
 	begin = 0;
 	end = 0;
 	count = count_cmds(input);
-	new = (char **)malloc(sizeof(char *) * count + 1);
+	!(new = (char **)malloc(sizeof(char *) * count + 1))
+	? exit_shell(NULL, -1) : 0;
 	while (input[end] && count)
 	{
 		if (input[end + 1] == ';' || input[end + 1] == '\0')
 		{
-			new[i] = ft_strsub(input, begin, end + 1);
+			!(new[i] = ft_strsub(input, begin, end + 1))
+			? exit_shell(new, -1) : 0;
 			count--;
 			begin = end + 2;
 			i++;

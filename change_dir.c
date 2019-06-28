@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 20:17:15 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 22:16:17 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 16:13:29 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,6 @@ char		*fullpath_from_short(int num)
 	return (new);
 }
 
-char		**parse_args(char *cmd, int len)
-{
-	char	**new;
-	int		start;
-	int		end;
-	int		i;
-
-	start = 0;
-	end = -1;
-	i = 0;
-	new = (char **)malloc(sizeof(char *) * len);
-	while (cmd[++end])
-	{
-		if (end == 0 && !ft_strcmp(cmd, "-"))
-			new[i++] = fullpath_from_short(2);
-		else if (cmd[end] == '/' || cmd[end + 1] == '\0')
-		{
-			new[i] = ft_strsub(cmd, start, end + 1 - start);
-			start = end + 1;
-			i++;
-		}
-	}
-	new[i] = NULL;
-	return (new);
-}
-
-char		**take_args(char *cmd)
-{
-	char	**new;
-	int		i;
-	int		len;
-
-	i = -1;
-	len = 0;
-	while (cmd[++i])
-	{
-		if (cmd[i] == '/' || cmd[i + 1] == '\0')
-			len++;
-	}
-	new = parse_args(cmd, len);
-	return (new);
-}
-
 void		rewrite_pwd(void)
 {
 	char	buf[4097];
@@ -84,7 +41,7 @@ void		rewrite_pwd(void)
 
 void		change_dir(char **cmd)
 {
-	char	**input;
+	char	*input;
 	int		i;
 
 	i = -1;
@@ -94,23 +51,16 @@ void		change_dir(char **cmd)
 		return ;
 	}
 	if (!cmd[0] || !ft_strcmp(cmd[0], ".") || !ft_strcmp(cmd[0], "~"))
-	{
-		input = (char **)malloc(sizeof(char *) + 1);
-		input[0] = fullpath_from_short(1);
-		input[1] = NULL;
-	}
+		input = fullpath_from_short(1);
+	else if (!ft_strcmp(cmd[0], "-"))
+		input = fullpath_from_short(2);
 	else if (cmd[0])
-		input = take_args(cmd[0]);
-	while (input[++i])
+		input = ft_strdup(cmd[0]);
+	if ((chdir(input)) < 0)
 	{
-		if ((chdir(input[i])) < 0)
-		{
-			erroring("cd", input[i], 1);
-			if (input)
-				free_array(&input);
-			return ;
-		}
-		else
-			change_pwd();
+		erroring("cd", input, 1);
+		return ;
 	}
+	else
+		change_pwd();
 }

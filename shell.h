@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 13:38:26 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 22:02:23 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 20:23:21 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,19 @@ void		exit_shell(char **arr, int error);
 
 void		print_welcome_msg();
 
+
+
 char		**split_cmds(char *input);
 char		**split_all(char *input);
 
-void		get_built(char **cmd);
+void		get_built(char **cmd, int num);
 void		execute_cmds(char **cmds);
 
 void		change_pwd();
 char		*parse_path(char *env, int	start);
 int			env_start(char *search_string);
 
+int			check_utility(char **cmd);
 int			check_builtin(char **cmd);
 
 void		change_dir(char **cmd);
@@ -55,6 +58,7 @@ int			set_env(char **cmd);
 
 void		unset_env(char **cmd);
 
+void		print_echo(char **cmd);
 void		print_env(void);
 
 char		*take_full_path(char *str);

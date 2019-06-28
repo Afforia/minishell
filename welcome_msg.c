@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:15:46 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 17:29:09 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 17:11:28 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		check_home_path(char *cwd)
 
 	i = 0;
 	if ((i = env_start("HOME=")) > 0)
-	{	
+	{
 		if (cmp_path(env[i], cwd))
 			return (1);
 	}

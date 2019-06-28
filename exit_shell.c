@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 14:55:39 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 22:18:48 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 17:19:32 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	exit_shell(char **arr, int error)
 		env = NULL;
 	}
 	if (arr)
+	{
 		free_array(&arr);
+		arr = NULL;
+	}
 	if (error == -1)
 	{
 		ft_putstr("Not enough space/cannot allocate memory.\n");

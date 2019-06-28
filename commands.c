@@ -6,13 +6,13 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 22:17:06 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 21:00:35 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		get_built(char **cmd)
+void		get_built(char **cmd, int num)
 {
 	char	*buil;
 	pid_t 	pid;
@@ -22,9 +22,9 @@ void		get_built(char **cmd)
 	int	i;
 
 	buil = NULL;
-	if (!(ft_strcmp(cmd[0], "pwd")) || !(ft_strcmp(cmd[0], "ls")))
+	if (num == 1)
 		buil = ft_strjoin("/bin/", cmd[0]);
-	else if (!(ft_strcmp(cmd[0], "clear")))
+	else if (num == 2)
 		buil = ft_strjoin("/usr/bin/", cmd[0]);
 	i = env_start("PWD=");
 	path = ft_strsub(env[i], 4, ft_strlen(env[i]) - 4);
@@ -59,7 +59,9 @@ void		execute_cmds(char **cmds)
 	{
 		cmd = NULL;
 		cmd = split_all(cmds[i]);
-		check_builtin(cmd);
+		if (check_builtin(cmd) || check_utility(cmd));
+		else
+			erroring(NULL, cmd[0], 3);	
 		if (cmd)
 			free_array(&cmd);
 		i++;

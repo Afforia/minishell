@@ -6,12 +6,11 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 14:11:03 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/25 16:04:26 by thaley           ###   ########.fr       */
+/*   Updated: 2019/06/28 21:02:15 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-#define SH_BUFSIZE 1024
 
 int		len_env(char **envp)
 {
@@ -23,21 +22,27 @@ int		len_env(char **envp)
 	return (len);
 }
 
-char	**write_env(char **envp)
+void	write_env(char **envp)
 {
-	char	**new;
 	int		i;
+	int		pwd;
+	char	*tmp;
 
-	if (!(new = (char **)malloc(sizeof(char *) * len_env(envp) + 1)))
-		exit_shell(new, -1);
+	if (!(env = (char **)malloc(sizeof(char *) * len_env(envp) + 1)))
+		exit_shell(NULL, -1);
 	i = 0;
 	while (envp[i])
 	{
-		if (!(new[i] = ft_strdup(envp[i])))
-			exit_shell(new, -1);
+		if (!(env[i] = ft_strdup(envp[i])))
+			exit_shell(NULL, -1);
 		i++;
 	}
-	return (new);
+	env[i] = NULL;
+	i = env_start("ZSH=");
+	pwd = env_start("_=");
+	tmp = ft_strsub(env[pwd], 2, ft_strlen(env[pwd]) - 2);
+	rewrite_env(i, "ZSH=", tmp);
+	free(tmp);
 }
 
 char	*ft_realloc(char *str, int i)
@@ -78,11 +83,10 @@ char	*take_input(void)
 
 int		main(int argc, char **argv, char **envp)
 {
-	char	*path;
 	char	*input;
 	char	**cmds;
 
-	env = write_env(envp);
+	write_env(envp);
 	while (1)
 	{
 		print_welcome_msg();
