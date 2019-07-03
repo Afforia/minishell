@@ -6,13 +6,13 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 18:38:24 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:04:58 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:19:52 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-char		**crt_new_env(char **env, char **new, int pos, int len)
+char		**crt_new_env(char **new, int pos, int len)
 {
 	int		j;
 	int		i;
@@ -46,7 +46,7 @@ char		**delet_env(int pos)
 		len++;
 	if (!(new = (char **)malloc(sizeof(char *) * len)))
 		exit_shell(NULL, -1);
-	new = crt_new_env(g_env, new, pos, len);
+	new = crt_new_env(new, pos, len);
 	free_array(g_env);
 	return (new);
 }

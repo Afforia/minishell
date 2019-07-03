@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 14:11:03 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:02:55 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:14:34 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*take_input(void)
 	int		i;
 
 	i = 0;
+	new = NULL;
 	while ((ret = read(0, &buf, 1)) && buf != '\n')
 	{
 		new = ft_realloc(new, i);
@@ -87,6 +88,8 @@ int		main(int argc, char **argv, char **envp)
 	char	**cmds;
 
 	write_env(envp);
+	(void)argc;
+	(void)argv;
 	while (1)
 	{
 		print_welcome_msg();

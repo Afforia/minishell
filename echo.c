@@ -6,22 +6,11 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 07:48:01 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/01 11:57:38 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:11:15 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-int		echo_count(char **cmd, int flag)
-{
-	int		i;
-	int		len;
-
-	i = -1 + flag;
-	while (cmd[++i])
-		len++;
-	return (len);
-}
 
 void	find_start_end(char **cmd, int *start, int *end, int i)
 {

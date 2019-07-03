@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 20:17:15 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:00:07 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:10:23 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char		*fullpath_from_short(int num)
 	char	*new;
 	int		pos;
 
+	new = NULL;
 	if (num == 1)
 	{
 		pos = env_start("HOME=");
@@ -73,6 +74,7 @@ void		change_dir(char **cmd)
 	int		i;
 
 	i = -1;
+	input = NULL;
 	if (cmd[0] && cmd[1])
 	{
 		erroring("cd", cmd[0], 2);

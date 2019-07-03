@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 15:45:05 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/03 15:51:22 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:18:31 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	**write_path_dir(char **path_dir, int start, int end, int pos)
 	return (path_dir);
 }
 
-char	**parse_path_dir(char **cmd)
+char	**parse_path_dir(void)
 {
 	char	**path_dir;
 	int		pos;

@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 21:13:07 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 21:14:11 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 17:15:58 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,21 @@ int		count_cmds(char *str)
 	int		i;
 	int		count;
 
-	count = 1;
+	count = 0;
 	i = -1;
 	while (str[++i])
 	{
+		if (!SPACES(str[i]))
+		{
+			count = 1;
+			break ;
+		}
+	}
+	while (str[i])
+	{
 		if (str[i] == ';')
 			count++;
+		i++;
 	}
 	return (count);
 }

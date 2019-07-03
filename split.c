@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:08:53 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 21:25:32 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:07:07 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	**write_cmds(char *input, int count, char **new)
 	i = 0;
 	begin = 0;
 	end = 0;
+	while (input[end] && (SPACES(input[end]) || input[end] == ';'))
+		end++;
 	while (input[end] && count)
 	{
 		if (input[end + 1] == ';' || input[end + 1] == '\0')

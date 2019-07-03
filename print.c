@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 17:10:30 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:03:20 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:18:59 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ void		print_with_quotes(char **cmd)
 
 void		print_with_input(char **cmd)
 {
-	int		ret;
 	int		i;
 	int		j;
-	char	buf;
 	char	*tmp;
 
 	i = -1;

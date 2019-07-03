@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 18:20:43 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/03 15:45:59 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:18:13 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		check_utility(char **cmd)
 		if (get_built(cmd, NULL, -1))
 			return (0);
 	}
-	if (!(path_dir = parse_path_dir(cmd)))
+	if (!(path_dir = parse_path_dir()))
 	{
 		free_array(path_dir);
 		return (1);

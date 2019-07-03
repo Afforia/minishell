@@ -6,13 +6,13 @@
 #    By: thaley <thaley@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/20 13:59:52 by thaley            #+#    #+#              #
-#    Updated: 2019/06/26 12:24:18 by thaley           ###   ########.fr        #
+#    Updated: 2019/07/03 18:08:31 by thaley           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 OBJ_DIR = objects/
-CFLAGS = -g #-Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 SRC = $(wildcard *.c)
 
@@ -42,7 +42,7 @@ fclean: clean
 re: fclean all
 
 norme:
-	norminette *.c *.h
+	norminette *.c *.h author Makefile
 
 # tests:
 # 	rm -f test/ls.txt test/ft_ls.txt

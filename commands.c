@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:01:21 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 17:29:52 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ void		execute_cmds(char **cmds)
 	{
 		cmd = NULL;
 		if (!(cmd = split_all(cmds[i])))
+		{
+			i++;
 			continue ;
+		}
 		if (check_define(cmd))
 			;
 		if (check_dir(cmd[0]))

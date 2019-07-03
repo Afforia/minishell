@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 22:06:28 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:06:31 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 18:11:44 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void		change_pwd(void)
 	int		oldpwd_pos;
 	char	buf[4097];
 	char	*cwd;
-	char	*tmp;
 
 	cwd = getcwd(buf, 4096);
 	pwd_pos = env_start("PWD=");
