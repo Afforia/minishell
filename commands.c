@@ -6,47 +6,57 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/28 21:00:35 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:01:21 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		get_built(char **cmd, int num)
+void		exec_cmd(char *buil, char **cmd)
 {
-	char	*buil;
-	pid_t 	pid;
-	pid_t 	wpid;
+	pid_t	pid;
+	pid_t	wpid;
 	int		status;
-	char	*path = NULL;
-	int	i;
 
-	buil = NULL;
-	if (num == 1)
-		buil = ft_strjoin("/bin/", cmd[0]);
-	else if (num == 2)
-		buil = ft_strjoin("/usr/bin/", cmd[0]);
-	i = env_start("PWD=");
-	path = ft_strsub(env[i], 4, ft_strlen(env[i]) - 4);
-	pid = fork();
-	if (pid == 0)
+	if ((pid = fork()) == 0)
 	{
-		if (execve(buil, cmd, env) == -1)
-			perror("hz");
-		if (buil)
-			free(buil);
-		return ;
+		if (execve(buil, cmd, g_env) == -1)
+		{
+			ft_putendl("error.");
+			exit(0);
+		}
 	}
 	else if (pid < 0)
-		perror("2hs");
+	{
+		ft_putendl("fork error.");
+		exit(0);
+	}
 	else
 	{
-		do{
+		wpid = waitpid(pid, &status, WUNTRACED);
+		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			wpid = waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 	if (buil)
 		free(buil);
+}
+
+int			get_built(char **cmd, char **path_dir, int num)
+{
+	char	*buil;
+	char	*path;
+
+	if (num == -1)
+		buil = ft_strdup(cmd[0]);
+	else
+	{
+		path = ft_strjoin(path_dir[num], "/");
+		buil = ft_strjoin(path, cmd[0]);
+		free(path);
+	}
+	exec_cmd(buil, cmd);
+	free_array(path_dir);
+	return (1);
 }
 
 void		execute_cmds(char **cmds)
@@ -58,14 +68,19 @@ void		execute_cmds(char **cmds)
 	while (cmds[i])
 	{
 		cmd = NULL;
-		cmd = split_all(cmds[i]);
-		if (check_builtin(cmd) || check_utility(cmd));
-		else
-			erroring(NULL, cmd[0], 3);	
+		if (!(cmd = split_all(cmds[i])))
+			continue ;
+		if (check_define(cmd))
+			;
+		if (check_dir(cmd[0]))
+		{
+			if (check_builtin(cmd) && check_utility(cmd))
+				erroring(NULL, cmd[0], 3);
+		}
 		if (cmd)
-			free_array(&cmd);
+			free_array(cmd);
 		i++;
 	}
 	if (cmds)
-		free_array(&cmds);
+		free_array(cmds);
 }

@@ -6,67 +6,94 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 17:10:30 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/28 21:36:06 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:03:20 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-int		echo_count(char **cmd, int flag)
-{
-	int		i;
-	int		len;
-
-	i = -1 + flag;
-	while (cmd[++i])
-		len++;
-	return (len);
-}
-
-void	find_start_end(char **cmd, int start, int end, int i)
-{
-	int		j;
-
-	while (cmd[++i])
-	{
-		j = -1;
-		while (cmd[i][++j])
-		{
-			if (j == 0 && cmd[i][j] == '"')
-				start = 1;
-			else if (j == 0 && cmd[i][j] == '\\')
-				start = 2;
-			if (cmd[i][j + 1] == '\0' && cmd[i][j])
-		}
-	}
-}
-
-void	print_echo(char **cmd)
-{
-	int		flag;
-	int		start;
-	int		end;
-	int		i;
-	char	**tmp;
-
-	flag = 0;
-	if (!(ft_strcmp(cmd[0], "-n")))
-		flag = 1;
-	i = -1 + flag;
-	start = 0;
-	end = 0;
-	tmp = (char **)malloc(sizeof(char *) * (echo_count(cmd, flag) + 1));
-	find_start_end(cmd, &start, &end, i);
-}
 
 void		print_env(void)
 {
 	int		i;
 
 	i = -1;
-	while (env[++i])
+	while (g_env[++i])
 	{
-		ft_putstr(env[i]);
+		ft_putstr(g_env[i]);
 		write(1, "\n", 1);
 	}
+}
+
+void		print_with_quotes(char **cmd)
+{
+	int		i;
+	int		j;
+
+	i = -1;
+	while (cmd[++i])
+	{
+		j = -1;
+		while (cmd[i][++j])
+		{
+			if ((j == 0 && (cmd[i][j] == '"' || cmd[i][j] == '\\')) ||
+			(cmd[i][j + 1] == '\0' && (cmd[i][j] == '\\' || cmd[i][j] == '"')))
+				continue ;
+			write(1, &cmd[i][j], 1);
+		}
+		if (cmd[i + 1])
+			write(1, " ", 1);
+	}
+}
+
+void		print_with_input(char **cmd)
+{
+	int		ret;
+	int		i;
+	int		j;
+	char	buf;
+	char	*tmp;
+
+	i = -1;
+	write(1, "> ", 2);
+	tmp = take_input();
+	while (cmd[++i])
+	{
+		j = -1;
+		while (cmd[i][++j])
+		{
+			if ((j == 0 && (cmd[i][j] == '"' || cmd[i][j] == '\\'))
+			|| (cmd[i][j + 1] == '\0' && (cmd[i][j] == '\\'
+			|| cmd[i][j] == '"')))
+				continue ;
+			write(1, &cmd[i][j], 1);
+		}
+		if (cmd[i + 1])
+			write(1, " ", 1);
+	}
+	ft_putstr(tmp);
+	free(tmp);
+}
+
+void		print_echo(char **cmd, int start, int end, int flag)
+{
+	int		i;
+
+	i = -1;
+	if ((start == 2 || start == 1) && end == 2)
+		print_with_input(cmd);
+	else if ((start == 2 || start == 1) && end == 1)
+		print_with_quotes(cmd);
+	else if (start == 1 && end == 1)
+		print_with_quotes(cmd);
+	else
+	{
+		while (cmd[++i])
+		{
+			ft_putstr(cmd[i]);
+			if (cmd[i + 1])
+				write(1, " ", 1);
+		}
+	}
+	if (!flag)
+		write(1, "\n", 1);
 }

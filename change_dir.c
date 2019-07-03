@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 20:17:15 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/28 16:13:29 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:00:07 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ char		*fullpath_from_short(int num)
 	if (num == 1)
 	{
 		pos = env_start("HOME=");
-		new = ft_strsub(env[pos], 5, ft_strlen(env[pos]) - 5);
+		new = ft_strsub(g_env[pos], 5, ft_strlen(g_env[pos]) - 5);
 	}
 	else if (num == 2)
 	{
 		pos = env_start("OLDPWD=");
-		new = ft_strsub(env[pos], 7, ft_strlen(env[pos]) - 7);
+		new = ft_strsub(g_env[pos], 7, ft_strlen(g_env[pos]) - 7);
 	}
 	return (new);
 }
@@ -39,6 +39,34 @@ void		rewrite_pwd(void)
 	change_pwd(cwd);
 }
 
+char		*from_homepath(char *cmd)
+{
+	char	*new;
+	char	*tmp;
+	char	*home;
+	int		pos;
+
+	tmp = ft_strsub(cmd, 1, ft_strlen(cmd) - 1);
+	pos = env_start("HOME=");
+	home = parse_path(g_env[pos], 5);
+	new = ft_strjoin(home, tmp);
+	free(tmp);
+	free(home);
+	return (new);
+}
+
+int			check_input(char *input)
+{
+	if (access(input, F_OK))
+		erroring("cd", input, 1);
+	else if (access(input, X_OK))
+		erroring("cd", input, 4);
+	else
+		return (0);
+	free(input);
+	return (1);
+}
+
 void		change_dir(char **cmd)
 {
 	char	*input;
@@ -47,20 +75,22 @@ void		change_dir(char **cmd)
 	i = -1;
 	if (cmd[0] && cmd[1])
 	{
-		erroring("cd", cmd[0],  2);
+		erroring("cd", cmd[0], 2);
 		return ;
 	}
 	if (!cmd[0] || !ft_strcmp(cmd[0], ".") || !ft_strcmp(cmd[0], "~"))
 		input = fullpath_from_short(1);
+	else if (cmd[0][0] == '~')
+		input = from_homepath(cmd[0]);
 	else if (!ft_strcmp(cmd[0], "-"))
 		input = fullpath_from_short(2);
 	else if (cmd[0])
 		input = ft_strdup(cmd[0]);
-	if ((chdir(input)) < 0)
-	{
-		erroring("cd", input, 1);
+	if (check_input(input))
 		return ;
-	}
+	if ((chdir(input)) < 0)
+		;
 	else
 		change_pwd();
+	free(input);
 }

@@ -6,40 +6,48 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 18:38:24 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/26 19:12:14 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:04:58 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
+char		**crt_new_env(char **env, char **new, int pos, int len)
+{
+	int		j;
+	int		i;
+
+	i = 0;
+	j = 0;
+	while (len > 0 && g_env[j])
+	{
+		if (j == pos)
+			j++;
+		else if (j != pos)
+		{
+			if (!(new[i] = ft_strdup(g_env[j])))
+				exit_shell(new, -1);
+			len--;
+			j++;
+			i++;
+		}
+	}
+	new[i] = NULL;
+	return (new);
+}
+
 char		**delet_env(int pos)
 {
 	char	**new;
 	int		len;
-	int		i;
-	int		j;
 
 	len = 0;
-	i = 0;
-	j = 0;
-	if (pos == 0)
-		j++;
-	while (env[len])
+	while (g_env[len])
 		len++;
-	new = (char **)malloc(sizeof(char *) * len - 1);
-	free(env[pos]);
-	env[pos] = NULL;
-	new[len - 1] = NULL;
-	while (--len >=0)
-	{
-		if (env[j] != NULL)
-		{
-			new[i] = ft_strdup(env[j]);
-			free(env[j]);
-		}
-		i++;
-		j++;
-	}
+	if (!(new = (char **)malloc(sizeof(char *) * len)))
+		exit_shell(NULL, -1);
+	new = crt_new_env(g_env, new, pos, len);
+	free_array(g_env);
 	return (new);
 }
 
@@ -57,6 +65,6 @@ void		unset_env(char **cmd)
 		return ;
 	}
 	else
-		env = delet_env(pos);
+		g_env = delet_env(pos);
 	free(tmp);
 }

@@ -6,31 +6,47 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 16:57:25 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/28 20:20:30 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:06:08 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		cd_errors(char *str, int error)
+void		cd_errors(char *cmd, char *str, int error)
 {
-	if (error == 1)
+	char	*tmp;
+
+	if (cmd)
 	{
-		ft_putstr("cd: no such file or directory: ");
-		ft_putendl(str);
+		if (error == 1)
+			tmp = ft_strjoin(cmd, ": no such file or directory: ");
+		if (error == 2)
+			tmp = ft_strjoin(cmd, ": string not in pwd: ");
 	}
-	else if (error == 2)
+	else
 	{
-		ft_putstr("cd: string not in pwd: ");
-		ft_putendl(str);
+		if (error == 1)
+			tmp = ft_strdup("no such file or directory: ");
+		if (error == 2)
+			tmp = ft_strdup("string not in pwd: ");
 	}
+	ft_putstr_fd(tmp, 2);
+	ft_putendl_fd(str, 2);
+	free(tmp);
 }
 
 void		erroring(char *cmd, char *str, int error)
 {
-	if (!(ft_strcmp(cmd, "cd")))
-		cd_errors(str, error);
+	if (error == 1 || error == 2)
+		cd_errors(cmd, str, error);
 	else if (error == 3)
+	{
 		ft_putstr("minishell: command not found: ");
-		ft_putendl(str);
+		ft_putendl_fd(str, 2);
+	}
+	else if (error == 4)
+	{
+		ft_putstr("cd: permission denied: ");
+		ft_putendl_fd(str, 2);
+	}
 }

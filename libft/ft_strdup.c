@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 05:08:47 by thaley            #+#    #+#             */
-/*   Updated: 2018/12/02 05:08:48 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 15:47:57 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,9 @@ char	*ft_strdup(const char *s1)
 	char	*scp;
 
 	i = 0;
-	while (s1[i] != '\0')
-		i++;
-	if (i == 0)
-	{
-		if (!(scp = (char*)malloc(sizeof(char) * (1))))
-			return (NULL);
-	}
-	else if (!(scp = (char*)malloc(sizeof(char) * (i + 1))))
+	if (!s1)
+		return (NULL);
+	if (!(scp = (char*)malloc(sizeof(char) * (ft_strlen(s1) + 1))))
 		return (NULL);
 	i = 0;
 	while (*(s1 + i) != '\0')

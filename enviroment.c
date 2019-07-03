@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/25 15:04:17 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/27 22:17:56 by thaley           ###   ########.fr       */
+/*   Created: 2019/07/02 22:06:28 by thaley            #+#    #+#             */
+/*   Updated: 2019/07/02 22:06:31 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		change_pwd()
+void		change_pwd(void)
 {
 	int		pwd_pos;
 	int		oldpwd_pos;
@@ -23,12 +23,12 @@ void		change_pwd()
 	cwd = getcwd(buf, 4096);
 	pwd_pos = env_start("PWD=");
 	oldpwd_pos = env_start("OLDPWD=");
-	if (env[oldpwd_pos])
-		free(env[oldpwd_pos]);
-	env[oldpwd_pos] = ft_strjoin("OLD", env[pwd_pos]);
-	if (env[pwd_pos])
-		free(env[pwd_pos]);
-	env[pwd_pos] = ft_strjoin("PWD=", cwd);
+	if (g_env[oldpwd_pos])
+		free(g_env[oldpwd_pos]);
+	g_env[oldpwd_pos] = ft_strjoin("OLD", g_env[pwd_pos]);
+	if (g_env[pwd_pos])
+		free(g_env[pwd_pos]);
+	g_env[pwd_pos] = ft_strjoin("PWD=", cwd);
 }
 
 int			env_start(char *search_string)
@@ -39,26 +39,26 @@ int			env_start(char *search_string)
 
 	i = -1;
 	len = ft_strlen(search_string);
-	while (env[++i])
+	while (g_env[++i])
 	{
 		j = -1;
-		while (env[i][++j] && j < len)
+		while (g_env[i][++j] && j < len)
 		{
-			if (env[i][j] == search_string[j] && search_string[j + 1] == '\0')
+			if (g_env[i][j] == search_string[j] && search_string[j + 1] == '\0')
 				return (i);
-			else if (env[i][j] != search_string[j])
+			else if (g_env[i][j] != search_string[j])
 				break ;
 		}
 	}
 	return (-1);
 }
 
-char		*parse_path(char *env, int	start)
+char		*parse_path(char *g_env, int start)
 {
 	char	*new;
 
-	if (!env)
+	if (!g_env)
 		return (NULL);
-	new = ft_strsub(env, start, (ft_strlen(env) - start));
+	new = ft_strsub(g_env, start, (ft_strlen(g_env) - start));
 	return (new);
 }

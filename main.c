@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 14:11:03 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/28 21:02:15 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:02:55 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ void	write_env(char **envp)
 	int		pwd;
 	char	*tmp;
 
-	if (!(env = (char **)malloc(sizeof(char *) * len_env(envp) + 1)))
+	if (!(g_env = (char **)malloc(sizeof(char *) * len_env(envp) + 1)))
 		exit_shell(NULL, -1);
 	i = 0;
 	while (envp[i])
 	{
-		if (!(env[i] = ft_strdup(envp[i])))
-			exit_shell(NULL, -1);
+		if (!(g_env[i] = ft_strdup(envp[i])))
+			exit_shell(g_env, -1);
 		i++;
 	}
-	env[i] = NULL;
+	g_env[i] = NULL;
 	i = env_start("ZSH=");
 	pwd = env_start("_=");
-	tmp = ft_strsub(env[pwd], 2, ft_strlen(env[pwd]) - 2);
+	tmp = ft_strsub(g_env[pwd], 2, ft_strlen(g_env[pwd]) - 2);
 	rewrite_env(i, "ZSH=", tmp);
 	free(tmp);
 }
@@ -90,8 +90,10 @@ int		main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		print_welcome_msg();
-		signal(SIGINT, SIG_DFL);
+		signal(SIGINT, signal_handler);
 		input = take_input();
+		if (!input)
+			continue ;
 		cmds = split_cmds(input);
 		execute_cmds(cmds);
 	}

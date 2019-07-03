@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 17:23:53 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/26 19:22:05 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:04:28 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void		rewrite_env(int pos, char *name, char *value)
 {
-	free(env[pos]);
-	env[pos] = NULL;
-	env[pos] = ft_strjoin(name, value);
+	free(g_env[pos]);
+	g_env[pos] = NULL;
+	g_env[pos] = ft_strjoin(name, value);
 }
 
 char		**add_env(char *name, char *value, int len)
@@ -26,13 +26,12 @@ char		**add_env(char *name, char *value, int len)
 
 	i = 0;
 	new = (char **)malloc(sizeof(char *) * len + 1);
-	while (env[i])
+	while (g_env[i])
 	{
-		new[i] = ft_strdup(env[i]);
-		free(env[i]);
+		new[i] = ft_strdup(g_env[i]);
 		i++;
 	}
-	free(env);
+	free_array(g_env);
 	new[i] = ft_strjoin(name, value);
 	new[i + 1] = NULL;
 	return (new);
@@ -48,9 +47,9 @@ int			set_env_aux(char *name, char *value, int overwrite)
 	tmp = ft_strjoin(name, "=");
 	if ((pos = env_start(tmp)) < 0)
 	{
-		while (env[len])
+		while (g_env[len])
 			len++;
-		env = add_env(tmp, value, len + 1);
+		g_env = add_env(tmp, value, len + 1);
 	}
 	else if (overwrite)
 		rewrite_env(pos, tmp, value);
@@ -63,7 +62,7 @@ int			set_env(char **cmd)
 	int		overwrite;
 
 	overwrite = 0;
-	if (cmd[2] != NULL)
+	if (cmd[1] && cmd[2] != NULL)
 		overwrite = ft_atoi(cmd[2]);
 	if (!cmd[0])
 	{
@@ -72,7 +71,7 @@ int			set_env(char **cmd)
 	}
 	if (cmd[1] && !overwrite && (cmd[2] != NULL && cmd[2][0] != '0'))
 	{
-		ft_putstr("setenv: Too many arguments.");
+		ft_putstr("setg_env: Too many arguments.");
 		return (1);
 	}
 	if (cmd[2])

@@ -1,47 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_shell.c                                       :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/24 14:55:39 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:02:09 by thaley           ###   ########.fr       */
+/*   Created: 2019/07/02 16:31:05 by thaley            #+#    #+#             */
+/*   Updated: 2019/07/02 20:26:16 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	free_array(char **arr)
+void			signal_handler(int sign)
 {
-	int		i;
-
-	i = -1;
-	if (!arr)
-		return ;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-	arr = NULL;
-}
-
-void	exit_shell(char **arr, int error)
-{
-	if (g_env)
+	if (sign == SIGINT)
 	{
-		free_array(g_env);
-		g_env = NULL;
+		write(1, "\n", 1);
+		print_welcome_msg();
+		signal(SIGINT, signal_handler);
 	}
-	if (arr)
-	{
-		free_array(arr);
-		arr = NULL;
-	}
-	if (error == -1)
-	{
-		ft_putstr("Not enough space/cannot allocate memory.\n");
-		exit(0);
-	}
-	if (error == 0)
-		exit(EXIT_SUCCESS);
 }

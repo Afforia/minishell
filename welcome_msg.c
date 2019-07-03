@@ -6,29 +6,29 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 15:15:46 by thaley            #+#    #+#             */
-/*   Updated: 2019/06/28 17:11:28 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/02 22:05:23 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		cmp_path(char *env, char *cwd)
+int		cmp_path(char *g_env, char *cwd)
 {
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	while (env[i] && env[i] != '=')
+	while (g_env[i] && g_env[i] != '=')
 		i++;
 	i++;
-	while (env[i + j] && cwd[j])
+	while (g_env[i + j] && cwd[j])
 	{
-		if (env[i + j] != cwd[j])
+		if (g_env[i + j] != cwd[j])
 			return (0);
 		j++;
 	}
-	if (env[i + j] == '\0' && cwd[j] == '\0')
+	if (g_env[i + j] == '\0' && cwd[j] == '\0')
 		return (1);
 	else
 		return (0);
@@ -41,7 +41,7 @@ int		check_home_path(char *cwd)
 	i = 0;
 	if ((i = env_start("HOME=")) > 0)
 	{
-		if (cmp_path(env[i], cwd))
+		if (cmp_path(g_env[i], cwd))
 			return (1);
 	}
 	return (0);
