@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 20:54:48 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/03 14:55:27 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/03 16:04:27 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ int			check_define(char **cmd)
 	i = -1;
 	while (cmd[++i])
 	{
-		if (cmd[i][0] == '$')
+		if (cmd[i][0] == '$' || (cmd[i][1] == '$'))
 		{
-			tmp = take_define(cmd[i], 1);
+			if (cmd[i][0] == '$')
+				tmp = take_define(cmd[i], 1);
+			else
+				tmp = take_define(cmd[i], 2);
 			free(cmd[i]);
 			if (!tmp)
 			{
