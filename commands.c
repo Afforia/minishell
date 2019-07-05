@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/24 16:24:04 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/03 17:29:52 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/05 15:36:07 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,23 @@
 void		exec_cmd(char *buil, char **cmd)
 {
 	pid_t	pid;
-	pid_t	wpid;
-	int		status;
 
-	if ((pid = fork()) == 0)
+	pid = fork();
+	signal(SIGINT, signal_handler_aux);
+	if (pid == 0)
 	{
 		if (execve(buil, cmd, g_env) == -1)
 		{
-			ft_putendl("error.");
+			ft_putendl("No such file or directory.");
 			exit(0);
 		}
 	}
 	else if (pid < 0)
 	{
-		ft_putendl("fork error.");
+		ft_putendl("Fork faild to create a new process.");
 		exit(0);
 	}
-	else
-	{
-		wpid = waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-			wpid = waitpid(pid, &status, WUNTRACED);
-	}
+	wait(&pid);
 	if (buil)
 		free(buil);
 }
