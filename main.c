@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 14:11:03 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/03 18:14:34 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/05 17:11:23 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*take_input(void)
 
 	i = 0;
 	new = NULL;
-	while ((ret = read(0, &buf, 1)) && buf != '\n')
+	while ((ret = read(0, &buf, 1) > 0) && buf != '\n')
 	{
 		new = ft_realloc(new, i);
 		new[i] = buf;

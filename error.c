@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 16:57:25 by thaley            #+#    #+#             */
-/*   Updated: 2019/07/02 22:06:08 by thaley           ###   ########.fr       */
+/*   Updated: 2019/07/05 17:32:35 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void		erroring(char *cmd, char *str, int error)
 	}
 	else if (error == 4)
 	{
-		ft_putstr("cd: permission denied: ");
+		if (!ft_strcmp(cmd, "cd"))
+			ft_putstr("cd: permission denied: ");
+		else
+			ft_putstr("minishell: permission denied: ");
 		ft_putendl_fd(str, 2);
 	}
 }
